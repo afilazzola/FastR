@@ -97,24 +97,26 @@ Beaver_to_csv1.1(beaver_1,
 ### Make a function that exports any dataframe into an exports folder
 
 We want to make a function that can take any data frame and save it with any fileformat to an export folder. First, need to create a folder that is made for all the exports of the beaver file. To begin, we first need to find where your project folder begins (its root). Then manually create a new folder in that directory called "exports".
-```{r eval=FALSE}
+```{r eval = FALSE}
 ## Make a folder especially for beaver file exports
 here::here()
+```
 
+```{r}
 ## Create new input variables for new function
 # dir.create("./exports") ## make directory if it doesn't already exist
-path1.2 <- here::here("exports")  ## make that directory 
+path1.2 <- here::here("./exports/ ") # make the directory
 ```
 
 Next, we make the function that exports dataframe object to csv in csvs folder
 To accommodate the file path and file type objects, we'll add a two more input variables to our new function's set of input variables.
 ```{r}
-Beaver_to_csv1.2 <- function(dataframe, path, filetype) {
+Beaver_to_csv1.2 <- function(dataframe, path, filename, filetype) {
   write.csv(dataframe,
-                 paste0(path, ## specify file path
-                        "/", ## add slash to specify within folder
-                        deparse(substitute(dataframe)), ## use the dataframe as the name 
-                        filetype))
+            gsub(" ", "",
+                 paste0(path,
+                        filename,
+                        filetype)))
 }
 ```
 
@@ -129,19 +131,29 @@ Here's what the function is doing:
 
 Export dataframe to csv in csvs folder:
 ```{r}
-Beaver_to_csv1.2(beaver_1, here::here("exports"), filetype=".csv")
+Beaver_to_csv1.2(dataframe = beaver_1,
+                 path = here::here("./exports/ "),
+                 filename = "Beaver1",
+                 filetype = ".csv")
 ```
 
 Just for fun, add .txt as a file type option:
 ```{r}
-Beaver_to_csv1.2(beaver_1, here::here("exports"), filetype=".txt")
+Beaver_to_csv1.2(dataframe = beaver_1,
+                 path = here::here("./exports/ "),
+                 filename = "Beaver1",
+                 filetype = ".txt")
 ```
 
-We could skip the step of saving the function's input variables to individual objects and just input it all on the fly, as shown here:
+We could save our variables as objects and then reference them in the function too:
 ```{r}
-Beaver_to_csv1.2(beaver_1,
-                 path = here::here("exports"),
-                 filetype = ".txt")
+referenced_filename <- "Beaver_ref"
+referenced_filetype <- ".txt"
+
+Beaver_to_csv1.2(dataframe = beaver_1,
+                 path = path1.2, # we created this a few chunks above
+                 filename = referenced_filename,
+                 filetype = referenced_filetype)
 ```
 
 ### NB: Variable order matters
@@ -150,13 +162,14 @@ R will treat the variables you supply to the function in the order that the argu
 ```{r}
 Beaver_to_csv1.2(filetype = ".csv", 
                  dataframe = beaver_1,
-                 path = here::here("exports"))
+                 path = path1.2,
+                 filename = referenced_filename)
 ```
 
 Be careful here. If you supply the arguments in the wrong order and don't indicate which variables match the arguments, the function might not work. Here's an example with the basic function `lm`.
 
 With this function, R is expecting the formula first and then the data second. You'll find that reversing those arguments does not work.
-```{r}
+```{r eval = FALSE}
 lm(beaver_1, day ~ temp) # This doesn't work
 lm(day ~ temp, beaver_1) # This works
 ```
@@ -168,7 +181,7 @@ lm(data = beaver_1, day ~ temp) # This works even though it's not in the order t
 
 ### NB: Quoting (or not quoting) your argument matters
 Sometimes functions act upon arguments that are encased in quotations marks, sometimes not. There is a difference. Be aware of this and consider this if your function is failing.
-```{r}
+```{r eval = FALSE}
 lm(data = "beaver_1", day ~ temp) # This doesn't work
 ```
 
@@ -184,7 +197,10 @@ Beavers <- list(beaver_1, beaver_2)
 ```{r}
 Export_beaver_list <- function(df_list, path, filetype) {
   for (i in 1:length(df_list)){
-    Beaver_to_csv1.2(df_list[i], path=here::here("exports"), filetype)
+    Beaver_to_csv1.2(df_list[i],
+                     path,
+                     paste0("Beaver", i),
+                     filetype)
   }
 }
 ```
@@ -192,7 +208,7 @@ Export_beaver_list <- function(df_list, path, filetype) {
 ### Run function
 ```{r}
 Export_beaver_list(Beavers, 
-                   here::here("exports"),
+                   here::here("./exports/ "),
                    ".csv")
 ```
 
