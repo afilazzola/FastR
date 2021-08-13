@@ -316,7 +316,7 @@ here::here()</code></pre>
 <pre class="r"><code>## Create new input variables for new function
 # dir.create(&quot;./exports&quot;) ## make directory if it doesn't already exist
 path1.2 &lt;- here::here(&quot;./exports/ &quot;) # make the directory</code></pre>
-<p>Next, we make the function that exports dataframe object to csv in csvs folder To accommodate the file path and file type objects, we'll add a two more input variables to our new function's set of input variables.</p>
+<p>Next, we make the function that exports dataframe object to csv in csvs folder. To accommodate the file path and file type objects, we'll add a two more input variables to our new function's set of input variables.</p>
 <pre class="r"><code>Beaver_to_csv1.2 &lt;- function(dataframe, path, filename, filetype) {
   write.csv(dataframe,
             gsub(&quot; &quot;, &quot;&quot;,
@@ -528,7 +528,7 @@ ellipsis_example(x_var = beaver_1$time,
 }
 .btn:hover {background: #5DADE2;}
 </style>
-<p><a class="btn" href="https://afilazzola.github.io/FastR/"> Home </a> <a class="btn" href="https://afilazzola.github.io/FastR/Vectorization/vectorization.html"> Vectorization </a></p>
+<p><a class="btn" href="https://afilazzola.github.io/FastR/"> Home </a> <a class="btn" href="https://afilazzola.github.io/FastR/Parallelization/parallelization.html"> Parallelization </a></p>
 </div>
 </div>
 </div>

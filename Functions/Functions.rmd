@@ -108,8 +108,7 @@ here::here()
 path1.2 <- here::here("./exports/ ") # make the directory
 ```
 
-Next, we make the function that exports dataframe object to csv in csvs folder
-To accommodate the file path and file type objects, we'll add a two more input variables to our new function's set of input variables.
+Next, we make the function that exports dataframe object to csv in csvs folder. To accommodate the file path and file type objects, we'll add a two more input variables to our new function's set of input variables.
 ```{r}
 Beaver_to_csv1.2 <- function(dataframe, path, filename, filetype) {
   write.csv(dataframe,
